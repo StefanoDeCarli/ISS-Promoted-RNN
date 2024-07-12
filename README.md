@@ -1,5 +1,5 @@
 # ISS-Promoted-RNN
-Small Toolbox to aid ISS-promoted RNN architectures (LSTM and GRU)
+Small Toolbox to aid the training of ISS-promoted RNN architectures (LSTM and GRU)
 
 ## Folder Structure
 
