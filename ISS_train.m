@@ -51,7 +51,7 @@ window_RMSE = 5;                % Select on how many interactions to print a smo
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Utility functions directory
-addpath(genpath([pwd, filesep, 'ISS_utilities']));
+addpath(genpath([pwd, filesep, 'utilities']));
 
 % Scrape and initialize data
 num_layers = height(hidden_units);
