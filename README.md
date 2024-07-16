@@ -6,7 +6,7 @@ Small Toolbox to aid the training of ISS-promoted RNN architectures (LSTM and GR
 The toolbox consists of the following main components:
 
 1. `ISS_train.m`: The primary function for training the ISS-promoted RNN.
-2. `ISS_utilities`: A folder containing utility functions required for the training process.
+2. `utilities`: A folder containing utility functions required for the training process.
 3. `monitor_data_viewer.m`: A script for visualizing the training progress and ISS metrics.
 4. `tester.m`: A script to test the functionality of the training process using a provided dataset.
 5. `SMI_data.mat`: A sample dataset for testing and validation purposes.
@@ -89,7 +89,7 @@ dataset = struct(...
 );
 ```
 
-ISS_utilities
+utilities
 -------------
 
 This folder contains utility functions required for the training process. Ensure that this folder is included in your MATLAB path.
