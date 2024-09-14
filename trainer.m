@@ -5,6 +5,7 @@ close all;
 random_seed = 1;
 rng(random_seed);
 
+% Load dataset
 data = load(fullfile('data', 'SMI_data.mat'));
 varName = fieldnames(data);   % Get the field name(s) in the structure
 data = data.(varName{1});     % Access the contents using dynamic field referencing
