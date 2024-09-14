@@ -27,7 +27,7 @@ dropout_rate = 0.4;
 u_max_inputs = [2;2;2;2;2;2;3];
 learn_rate = 0.002;
 max_epochs = 5000;
-mini_batch = 10;
+mini_batch = numel(train_dataset.x); % Take all the trials, to change in case
 
 [net,info,monitor,net_name] = ISS_train(train_dataset, valid_dataset, ... % Data
     is_lstm, hidden_units, dropout_rate, ... % Architecture
