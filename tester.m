@@ -5,10 +5,12 @@ close all;
 random_seed = 1;
 rng(random_seed);
 
-load("SMI_data.mat");
+data = load(fullfile('data', 'SMI_data.mat'));
+varName = fieldnames(data);   % Get the field name(s) in the structure
+data = data.(varName{1});     % Access the contents using dynamic field referencing
 
-train_dataset = SMI_data.train_30s;
-valid_dataset = SMI_data.validation_30s;
+train_dataset = data.train_30s;
+valid_dataset = data.validation_30s;
 
 train_dataset.x = transpose_cell(train_dataset.x);
 train_dataset.y = transpose_cell(train_dataset.y);
@@ -16,14 +18,14 @@ train_dataset.y = transpose_cell(train_dataset.y);
 valid_dataset.x = transpose_cell(valid_dataset.x);
 valid_dataset.y = transpose_cell(valid_dataset.y);
 
-is_lstm = false;
+is_lstm = true;
 
-hidden_units = [256;256;128;64;32]; % X layers
-dropout_rate = 0.2;
+hidden_units = [256;128;128]; % X layers
+dropout_rate = 0.4;
 
 u_max_inputs = [2;2;2;2;2;2;3];
-learn_rate = 0.0035;
-max_epochs = 1000;
+learn_rate = 0.002;
+max_epochs = 5000;
 mini_batch = 10;
 
 [net,info,monitor,net_name] = ISS_train(train_dataset, valid_dataset, ... % Data

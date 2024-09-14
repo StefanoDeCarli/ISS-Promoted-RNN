@@ -9,7 +9,7 @@ The toolbox consists of the following main components:
 2. `utilities`: A folder containing utility functions required for the training process.
 3. `monitor_data_viewer.m`: A script for visualizing the training progress and ISS metrics.
 4. `tester.m`: A script to test the functionality of the training process using a provided dataset.
-5. `SMI_data.mat`: A sample dataset for testing and validation purposes.
+5. `data`: Contains the dataset for testing and validation purposes.
 6. `README.md`: This file provides an overview and instructions for using the toolbox.
 
 ## ISS_train.m
@@ -40,10 +40,12 @@ function [net, info, monitor, net_name] = ISS_train(train_dataset, valid_dataset
 ### Example Usage
 
 ```matlab
-load('SMI_data.mat');
+data = load(fullfile('data', 'SMI_data.mat'));
+varName = fieldnames(data);   % Get the field name(s) in the structure
+data = data.(varName{1});     % Access the contents using dynamic field referencing
 
-train_dataset = SMI_data.train_30s;
-valid_dataset = SMI_data.validation_30s;
+train_dataset = data.train_30s;
+valid_dataset = data.validation_30s;
 
 train_dataset.x = transpose_cell(train_dataset.x);
 train_dataset.y = transpose_cell(train_dataset.y);
