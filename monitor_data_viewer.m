@@ -4,13 +4,25 @@ clear;
 close all;
 
 % Load the monitor data (add name to the directory)
-load("net_results\...");
+load("net_results\..");
 
 % Set characteristics for plotting
 line_width = 2;   
 font_size = 30;
 
 monitor_data = net_results.monitor_data;
+
+% Find the first occurrence of zero in rmse_train
+zero_idx = find(monitor_data.rmse_train == 0, 1);
+
+% If there is a zero in rmse_train, cut the data
+if ~isempty(zero_idx)
+    monitor_data.rmse_train = monitor_data.rmse_train(1:zero_idx-1);
+    monitor_data.rmse_train_smooth = monitor_data.rmse_train_smooth(1:zero_idx-1);
+    monitor_data.rmse_validation = monitor_data.rmse_validation(1:zero_idx-1);
+    monitor_data.iterations_store = monitor_data.iterations_store(1:zero_idx-1);
+    monitor_data.iss_store = monitor_data.iss_store(1:zero_idx-1,:);
+end
 
 % Interpolate RMSE smooth and validation values
 valid_smooth_idx = monitor_data.rmse_train_smooth > 0;
@@ -36,23 +48,24 @@ legend('Training RMSE','Training RMSE smoothed','Validation RMSE', 'Location', '
 title('RMSE Metrics', 'FontSize', font_size);
 xlim([min(monitor_data.iterations_store), max(monitor_data.iterations_store)]);
 grid on;
+
+% Plot a vertical dotted line at the lowest validation score iteration
+xline(monitor_data.min_val_iteration, '--k', 'LineWidth', line_width, 'DisplayName',"Min ISS evaluation rmse"); % Assuming all seeds are equal
+
 hold off;
 
 % Plot ISS metrics
 subplot(2,1,2);
 
 % Count the number of ISS fields in monitor_data
-iss_fields = fieldnames(monitor_data);
-num_iss_layers = sum(contains(iss_fields, 'iss_'));
+num_iss_layers = width(monitor_data.iss_store);
 
 % Plot ISS metrics dynamically based on the number of layers
 colors = ['r', 'b', 'g', 'm', 'c', 'y', 'k']; % Add more colors if needed
 for i = 1:num_iss_layers
     iss_field = strcat('iss_', num2str(i), '_store');
-    if isfield(monitor_data, iss_field)
-        plot(monitor_data.iterations_store, monitor_data.(iss_field), 'Color', colors(mod(i-1,length(colors))+1), 'DisplayName', ['ISS ', num2str(i)], 'LineWidth', line_width);
-        hold on;
-    end
+    plot(monitor_data.iterations_store, monitor_data.iss_store(:,i), 'Color', colors(mod(i-1,length(colors))+1), 'DisplayName', ['ISS ', num2str(i)], 'LineWidth', line_width);
+    hold on;
 end
 
 xlabel('Iterations', 'FontSize', font_size);
@@ -61,6 +74,9 @@ legend('show', 'Location', 'best', 'FontSize', font_size);
 title('ISS Metrics', 'FontSize', font_size);
 xlim([min(monitor_data.iterations_store), max(monitor_data.iterations_store)]);
 grid on;
+
+% Plot a vertical dotted line at the lowest validation score iteration
+xline(monitor_data.min_val_iteration, '--k', 'LineWidth', line_width, 'DisplayName',"Min ISS evaluation rmse"); % Assuming all seeds are equal
 hold off;
 
 linkaxes(findall(gcf,'Type','axes'), 'x');

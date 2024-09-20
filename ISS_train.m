@@ -43,7 +43,7 @@ else
     penalty = 0.05; % Default value
 end
 
-validation_frequency = 10e-3;    % Relative number of validation check during training
+validation_frequency = 5e-3;    % Relative number of validation check during training
 window_RMSE = 5;                % Select on how many interactions to print a smoothed RMSE training value
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -60,7 +60,7 @@ num_responses = width(valid_dataset.y{1});
 
 iss = zeros(num_layers,1);      % Initialize all iss condition values at zero
 
-u_max = cell (num_layers,1);    % Initialize u_max cell
+u_max = cell(num_layers,1);    % Initialize u_max cell
 u_max{1} = u_max_inputs;
 
 for i = 2:num_layers
@@ -217,6 +217,9 @@ while epoch < max_epochs && ~monitor.Stop
                 min_monitor_data.rmse_validation = rmse_validation(1:monitor_data_idx);
                 min_monitor_data.iterations_store = iterations_store(1:monitor_data_idx);
 
+                % Save the iteration when min_val_net is triggered
+                recorded_monitor.min_val_iteration = iteration;
+
                 % Save ISS values based on the number of layers
                 for i = 1:num_layers
                     % Dynamically set min_info fields for each ISS value
@@ -236,8 +239,15 @@ while epoch < max_epochs && ~monitor.Stop
     end
 end
 
+% Save all data in monitor
+recorded_monitor.rmse_train = rmse_train;                % Save RMSE for training
+recorded_monitor.rmse_train_smooth = rmse_train_smooth;  % Save smoothed training RMSE
+recorded_monitor.rmse_validation = rmse_validation;      % Save validation RMSE
+recorded_monitor.iterations_store = iterations_store;    % Save the iterations
+recorded_monitor.iss_store = iss_store;                  % Save ISS values for each layer
+
 net = min_val_net;
 info = min_info;
-monitor = min_monitor_data;
+monitor = recorded_monitor;
 
 end

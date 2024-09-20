@@ -21,7 +21,7 @@ valid_dataset.y = transpose_cell(valid_dataset.y);
 
 is_lstm = true;
 
-hidden_units = [256;128;128]; % X layers
+hidden_units = [400;400;400]; % X layers
 dropout_rate = 0.4;
 
 u_max_inputs = [2;2;2;2;2;2;3];
