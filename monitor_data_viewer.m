@@ -4,11 +4,13 @@ clear;
 close all;
 
 % Load the monitor data (add name to the directory)
-load("net_results\..");
+load("net_results\...");
 
 % Set characteristics for plotting
 line_width = 2;   
-font_size = 30;
+font_size = 12;
+set(groot, 'defaultAxesTickLabelInterpreter','latex');
+set(groot, 'defaultLegendInterpreter','latex');
 
 monitor_data = net_results.monitor_data;
 
@@ -42,10 +44,10 @@ plot(monitor_data.iterations_store, monitor_data.rmse_train, 'c', 'DisplayName',
 hold on;
 plot(monitor_data.iterations_store, interp_rmse_train_smooth, 'b', 'DisplayName', 'Training RMSE Smooth', 'LineWidth', line_width);
 plot(monitor_data.iterations_store, interp_rmse_validation, 'r', 'DisplayName', 'Validation RMSE', 'LineWidth', line_width);
-xlabel('Iterations', 'FontSize', font_size);
-ylabel('RMSE values', 'FontSize', font_size);
-legend('Training RMSE','Training RMSE smoothed','Validation RMSE', 'Location', 'best', 'FontSize', font_size);
-title('RMSE Metrics', 'FontSize', font_size);
+xlabel('Iterations', 'FontSize', font_size, 'Interpreter', 'latex');
+ylabel('RMSE values', 'FontSize', font_size, 'Interpreter', 'latex');
+legend('Training RMSE','Training RMSE smoothed','Validation RMSE', 'Location', 'best', 'FontSize', font_size, 'Interpreter', 'latex');
+title('RMSE Metrics', 'FontSize', font_size, 'Interpreter', 'latex');
 xlim([min(monitor_data.iterations_store), max(monitor_data.iterations_store)]);
 grid on;
 
@@ -68,19 +70,16 @@ for i = 1:num_iss_layers
     hold on;
 end
 
-xlabel('Iterations', 'FontSize', font_size);
-ylabel('ISS values', 'FontSize', font_size);
-legend('show', 'Location', 'best', 'FontSize', font_size);
-title('ISS Metrics', 'FontSize', font_size);
+xlabel('Iterations', 'FontSize', font_size, 'Interpreter', 'latex');
+ylabel('ISS values', 'FontSize', font_size, 'Interpreter', 'latex');
+legend('show', 'Location', 'best', 'FontSize', font_size, 'Interpreter', 'latex');
+title('ISS Metrics', 'FontSize', font_size, 'Interpreter', 'latex');
 xlim([min(monitor_data.iterations_store), max(monitor_data.iterations_store)]);
 grid on;
 
 % Plot a vertical dotted line at the lowest validation score iteration
-xline(monitor_data.min_val_iteration, '--k', 'LineWidth', line_width, 'DisplayName',"Min ISS evaluation rmse"); % Assuming all seeds are equal
+xline(monitor_data.min_val_iteration, '--k', 'LineWidth', line_width, 'DisplayName',"Min ISS evaluation rmse", 'Interpreter', 'latex'); % Assuming all seeds are equal
 hold off;
 
 linkaxes(findall(gcf,'Type','axes'), 'x');
 F.Color = 'w';
-
-% Save the updated monitor data with interpolated values
-% save(file_name,"monitor_data");
